@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import * as PIXI from "pixi.js";
+
 import Phaser from "phaser";
 import MainCanvas from "~/components/MainCanvas";
 
@@ -39,8 +41,18 @@ export default {
         let img = new Image();
         img.onload = e => {
           this.ctx.drawImage(img, 0, 0, 500, 500);
+          console.log("load image tag");
+          this.game.textures.addBase64("hoge", e.target.result);
+          // this.game.scene.scenes[0].load.image("hoge", img.src);
+          // this.game.scene.scenes[0].load.start();
+          // this.game.textures.addBase64("hoge", e.target.result);
+          // this.game.scene.scenes[0].add.image(100, 100, "hoge");
         };
         img.src = e.target.result;
+        // console.log(e.target.result);
+        // this.game.textures.addBase64("hoge", e.target.result);
+        // this.game.scene.scenes[0].add.image(100, 100, "hoge");
+        //this.game.add.image(100, 100, "hoge");
       };
       reader.readAsDataURL(fileData);
     }
@@ -54,10 +66,16 @@ export default {
       backgroundColor: "#2d2d2d",
       parent: "game",
       scene: {
-        preload: () => {}
+        create: function() {
+          console.log("create");
+          this.textures.once("addtexture", e => {
+            this.add.image(100, 100, "hoge");
+          });
+        },
+        update: () => {}
       }
     };
-    var game = new Phaser.Game(config);
+    this.game = new Phaser.Game(config);
   },
   components: {
     MainCanvas
