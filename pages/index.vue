@@ -1,36 +1,26 @@
 <template>
-  <div>
-    <div>
-      <canvas
-        class="main"
-        width="600"
-        height="600"
-        ref="ctx"
-      />
+  <div class="columns is-centered">
+    <div class="column">
+      <canvas ref="game" />
     </div>
-    <input
-      type="file"
-      accept="image/*"
-      multiple
-      @change="onImageChange"
-    >
-    <MainCanvas />
-    <div id="game">
+    <div class="column">
+      <input
+        type="file"
+        accept="image/*"
+        @change="onImageChange"
+      >
+      <MainCanvas />
     </div>
   </div>
 </template>
 
 <script>
-import * as PIXI from "pixi.js";
+import * as PIXI from "pixi.js-legacy";
 
-import Phaser from "phaser";
 import MainCanvas from "~/components/MainCanvas";
 
 export default {
   methods: {
-    drawCanvas() {
-      ctx.clearRect(0, 0, 500, 500);
-    },
     onImageChange(e) {
       var fileData = e.target.files[0];
       if (!fileData.type.match("image.*")) {
@@ -38,44 +28,18 @@ export default {
       }
       var reader = new FileReader();
       reader.onload = e => {
-        let img = new Image();
-        img.onload = e => {
-          this.ctx.drawImage(img, 0, 0, 500, 500);
-          console.log("load image tag");
-          this.game.textures.addBase64("hoge", e.target.result);
-          // this.game.scene.scenes[0].load.image("hoge", img.src);
-          // this.game.scene.scenes[0].load.start();
-          // this.game.textures.addBase64("hoge", e.target.result);
-          // this.game.scene.scenes[0].add.image(100, 100, "hoge");
-        };
-        img.src = e.target.result;
-        // console.log(e.target.result);
-        // this.game.textures.addBase64("hoge", e.target.result);
-        // this.game.scene.scenes[0].add.image(100, 100, "hoge");
-        //this.game.add.image(100, 100, "hoge");
+        let sprite = PIXI.Sprite.from(e.target.result);
+        sprite.x = 0;
+        sprite.y = 0;
+        this.app.stage.addChild(sprite);
       };
       reader.readAsDataURL(fileData);
     }
   },
   mounted() {
-    this.ctx = this.$refs.ctx.getContext("2d");
-    var config = {
-      type: Phaser.AUTO,
-      width: 600,
-      height: 600,
-      backgroundColor: "#2d2d2d",
-      parent: "game",
-      scene: {
-        create: function() {
-          console.log("create");
-          this.textures.once("addtexture", e => {
-            this.add.image(100, 100, "hoge");
-          });
-        },
-        update: () => {}
-      }
-    };
-    this.game = new Phaser.Game(config);
+    this.app = new PIXI.Application({
+      view: this.$refs.game
+    });
   },
   components: {
     MainCanvas
