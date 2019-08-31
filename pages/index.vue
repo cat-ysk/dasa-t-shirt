@@ -1,72 +1,72 @@
 <template>
-  <div class="container">
+  <div>
     <div>
-      <logo />
-      <h1 class="title">
-        dasa-t-shirt
-      </h1>
-      <h2 class="subtitle">
-        My fantastic Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+      <canvas
+        class="main"
+        width="600"
+        height="600"
+        ref="ctx"
+      />
+    </div>
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      @change="onImageChange"
+    >
+    <MainCanvas />
+    <div id="game">
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Phaser from "phaser";
+import MainCanvas from "~/components/MainCanvas";
 
 export default {
+  methods: {
+    drawCanvas() {
+      ctx.clearRect(0, 0, 500, 500);
+    },
+    onImageChange(e) {
+      var fileData = e.target.files[0];
+      if (!fileData.type.match("image.*")) {
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = e => {
+        let img = new Image();
+        img.onload = e => {
+          this.ctx.drawImage(img, 0, 0, 500, 500);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(fileData);
+    }
+  },
+  mounted() {
+    this.ctx = this.$refs.ctx.getContext("2d");
+    var config = {
+      type: Phaser.AUTO,
+      width: 600,
+      height: 600,
+      backgroundColor: "#2d2d2d",
+      parent: "game",
+      scene: {
+        preload: () => {}
+      }
+    };
+    var game = new Phaser.Game(config);
+  },
   components: {
-    Logo
+    MainCanvas
   }
-}
+};
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.main {
+  border: 1px solid #ccc;
 }
 </style>
