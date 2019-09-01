@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-centered">
     <div class="column">
-      <canvas ref="game" />
+      <MainCanvas ref="main" />
     </div>
     <div class="column">
       <input
@@ -9,37 +9,29 @@
         accept="image/*"
         @change="onImageChange"
       >
-      <MainCanvas />
     </div>
   </div>
 </template>
 
 <script>
-import * as PIXI from "pixi.js-legacy";
-
 import MainCanvas from "~/components/MainCanvas";
 
 export default {
   methods: {
     onImageChange(e) {
-      var fileData = e.target.files[0];
-      if (!fileData.type.match("image.*")) {
+      var fileObj = e.target.files[0];
+      if (!fileObj || !fileObj.type.match("image.*")) {
         return;
       }
+      this.readAsBase64Image(fileObj);
+    },
+    readAsBase64Image(fileObj) {
       var reader = new FileReader();
       reader.onload = e => {
-        let sprite = PIXI.Sprite.from(e.target.result);
-        sprite.x = 0;
-        sprite.y = 0;
-        this.app.stage.addChild(sprite);
+        this.$refs.main.loadImage(e.target.result);
       };
-      reader.readAsDataURL(fileData);
+      reader.readAsDataURL(fileObj);
     }
-  },
-  mounted() {
-    this.app = new PIXI.Application({
-      view: this.$refs.game
-    });
   },
   components: {
     MainCanvas
