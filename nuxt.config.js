@@ -4,7 +4,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: "湊あくあクソダサTシャツ選手権 ジェネレーター",
+    title: "#湊あくあクソダサTシャツ選手権 ちょう簡単画像作りマシーン",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
