@@ -9,7 +9,10 @@ const HEIGHT = 777;
 
 export default {
   data() {
-    return {};
+    return {
+      layerMask: null,
+      layerContainer: null
+    };
   },
 
   mounted() {
@@ -22,38 +25,74 @@ export default {
     // console.log(this.app.renderer.width);
     // this.imgLayer = new PIXI.display.Group(0, true);
     // this.app.stage.addChild(new PIXI.display.Layer(this.imgLayer));
+    this.layerContainer = new PIXI.Container();
+    this.app.stage.addChild(this.layerContainer);
+    // this.loadMask();
     this.loadCharaImage();
+    this.loadOverlay();
 
     // TEST
-    this.loadImage("buddha.jpg");
+    this.addImage("buddha.jpg");
   },
   methods: {
-    // あくあちゃん固定レイヤー
-    loadCharaImage() {
-      let tex = PIXI.Texture.from("001.png");
-      let sprite = new PIXI.Sprite.from(tex);
-      sprite.parentLayer = this.imgLayer;
+    loadMask() {
+      let sprite = new PIXI.Sprite.from("001_mask.png");
       sprite.width = this.app.renderer.width;
       sprite.height = this.app.renderer.height;
       this.app.stage.addChild(sprite);
-      // this.$emit("add-layer", sprite);
+
+      // this.layerMask = sprite;
+    },
+
+    // 服のしわとか
+    loadOverlay() {
+      let sprite = new PIXI.Sprite.from("001_overlay.png");
+      sprite.width = this.app.renderer.width;
+      sprite.height = this.app.renderer.height;
+      sprite.blendMode = PIXI.BLEND_MODES.MULTIPLY;
+      this.app.stage.addChild(sprite);
+    },
+
+    // ベースレイヤー
+    loadCharaImage() {
+      let tex = PIXI.Texture.from("001_mask.png");
+      let sprite = new PIXI.Sprite.from(tex);
+      sprite.width = this.app.renderer.width;
+      sprite.height = this.app.renderer.height;
+      this.app.stage.addChild(sprite);
     },
 
     // 追加画像レイヤー
-    loadImage(path) {
+    addImage(path) {
       let sprite = PIXI.Sprite.from(path);
-      sprite.parentLayer = this.imgLayer;
+      // sprite.parentLayer = this.imgLayer;
       sprite.x = this.app.renderer.width / 2;
       sprite.y = this.app.renderer.height / 2;
       sprite.anchor.x = sprite.anchor.y = 0.5;
       sprite.name = "レイヤー" + LAYER_ID++;
+      // sprite.mask = this.layerMask;
       subscribe(sprite);
-      this.app.stage.addChild(sprite);
+      this.layerContainer.addChild(sprite);
+      this.$emit("add-layer", sprite);
+    },
+
+    addText(body, size, color, font) {
+      let sprite = new PIXI.Text(body, {
+        fontSize: size,
+        fill: color,
+        fontFamily: font
+      });
+      sprite.x = this.app.renderer.width / 2;
+      sprite.y = this.app.renderer.height / 2;
+      sprite.anchor.x = sprite.anchor.y = 0.5;
+      sprite.name = "文字" + LAYER_ID++;
+      subscribe(sprite);
+      this.layerContainer.addChild(sprite);
       this.$emit("add-layer", sprite);
     },
 
     remove(sprite) {
-      this.app.stage.removeChild(sprite);
+      this.layerContainer.removeChild(sprite);
     }
   }
 };
