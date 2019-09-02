@@ -166,11 +166,24 @@
       ></script>
     </div>
     <hr />
-    <div class="columns column">
-      <p>更新履歴</p>
-      <ul>
-        <li>2019/09/03 v0.01</li>
-      </ul>
+    <div class="columns ">
+      <div class="column">
+
+        <p
+          class="is-block"
+          style="margin-right: 1rem"
+        >更新履歴</p>
+        <ul>
+          <li>2019/09/03 v0.2 表情変更機能追加</li>
+          <li>2019/09/03 v0.0.1 つくった</li>
+        </ul>
+      </div>
+      <!--
+      <div class="column">
+        サンキュー <a href="https://twitter.com/ononon/">@ononon</a><br />
+        バグ報告ここ <a href="https://twitter.com/nyallpo/">@nyallpo</a>
+      </div>
+      -->
     </div>
   </div>
 </template>
