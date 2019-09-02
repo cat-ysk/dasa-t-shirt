@@ -14,6 +14,7 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
+    script: [{ src: "https://twemoji.maxcdn.com/v/latest/twemoji.min.js" }],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       {

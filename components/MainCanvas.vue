@@ -3,6 +3,7 @@
 </template>
 
 <script>
+let selectedSprite = null;
 let LAYER_ID = 0;
 const WIDTH = 600;
 const HEIGHT = 777;
@@ -11,7 +12,8 @@ export default {
   data() {
     return {
       layerMask: null,
-      layerContainer: null
+      layerContainer: null,
+      selected: selectedSprite
     };
   },
 
@@ -27,23 +29,13 @@ export default {
     // this.app.stage.addChild(new PIXI.display.Layer(this.imgLayer));
     this.layerContainer = new PIXI.Container();
     this.app.stage.addChild(this.layerContainer);
-    // this.loadMask();
     this.loadCharaImage();
     this.loadOverlay();
 
     // TEST
-    this.addImage("buddha.jpg");
+    // this.addImage("buddha.jpg");
   },
   methods: {
-    loadMask() {
-      let sprite = new PIXI.Sprite.from("001_mask.png");
-      sprite.width = this.app.renderer.width;
-      sprite.height = this.app.renderer.height;
-      this.app.stage.addChild(sprite);
-
-      // this.layerMask = sprite;
-    },
-
     // 服のしわとか
     loadOverlay() {
       let sprite = new PIXI.Sprite.from("001_overlay.png");
@@ -64,12 +56,12 @@ export default {
 
     // 追加画像レイヤー
     addImage(path) {
-      let sprite = PIXI.Sprite.from(path);
+      let sprite = PIXI.Sprite.from(path, { crossOrigin: true });
       // sprite.parentLayer = this.imgLayer;
       sprite.x = this.app.renderer.width / 2;
       sprite.y = this.app.renderer.height / 2;
       sprite.anchor.x = sprite.anchor.y = 0.5;
-      sprite.name = "レイヤー" + LAYER_ID++;
+      sprite.name = "画像" + LAYER_ID++;
       // sprite.mask = this.layerMask;
       subscribe(sprite);
       this.layerContainer.addChild(sprite);
@@ -85,7 +77,7 @@ export default {
       sprite.x = this.app.renderer.width / 2;
       sprite.y = this.app.renderer.height / 2;
       sprite.anchor.x = sprite.anchor.y = 0.5;
-      sprite.name = "文字" + LAYER_ID++;
+      sprite.name = body;
       subscribe(sprite);
       this.layerContainer.addChild(sprite);
       this.$emit("add-layer", sprite);
@@ -99,7 +91,6 @@ export default {
 
 function subscribe(obj) {
   obj.interactive = true;
-  obj.selected = false;
   obj
     .on("pointerdown", onDragStart)
     .on("pointerup", onDragEnd)
@@ -108,10 +99,12 @@ function subscribe(obj) {
 }
 
 function onDragStart(event) {
+  selectedSprite = this;
+  console.log(this);
   if (!this.dragging) {
     this.data = event.data;
     this.dragging = true;
-    this.alpha = 0.8;
+    this.alpha = 0.7;
     this.dragPoint = event.data.getLocalPosition(this.parent);
     this.dragPoint.x -= this.x;
     this.dragPoint.y -= this.y;
