@@ -10,8 +10,14 @@ const HEIGHT = 777;
 export default {
   data() {
     return {
+      charaSprite: null,
       layerMask: null,
-      layerContainer: null
+      layerContainer: null,
+      baseTextures: [
+        PIXI.Texture.from("001_mask.png"),
+        PIXI.Texture.from("002_mask.png"),
+        PIXI.Texture.from("003_mask.png")
+      ]
     };
   },
 
@@ -45,11 +51,11 @@ export default {
 
     // ベースレイヤー
     loadCharaImage() {
-      let tex = PIXI.Texture.from("001_mask.png");
-      let sprite = new PIXI.Sprite.from(tex);
+      let sprite = new PIXI.Sprite.from(this.baseTextures[0]);
       sprite.width = this.app.renderer.width;
       sprite.height = this.app.renderer.height;
       this.app.stage.addChild(sprite);
+      this.charaSprite = sprite;
     },
 
     // 追加画像レイヤー
@@ -79,6 +85,10 @@ export default {
       this.subscribe(sprite);
       this.layerContainer.addChild(sprite);
       this.$emit("add-layer", sprite);
+    },
+
+    changeFace(id) {
+      this.charaSprite.texture = this.baseTextures[id];
     },
 
     remove(sprite) {

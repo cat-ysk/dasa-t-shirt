@@ -40,7 +40,6 @@
               :value="color.value"
               v-bind:style="{backgroundColor: '#' + color.value}"
             >{{ color.text }}</option>
-
           </select>
           <br />
           <label class="is-inline-block">フォント</label>
@@ -136,6 +135,16 @@
               type="number"
               v-model.number="rotateAmount"
             />
+            <label>表情</label>
+            <select
+              v-model="face"
+              style="width: 80px"
+              @change="changeFace"
+            >
+              <option value="0">🙂</option>
+              <option value="1">😄</option>
+              <option value="2">😧</option>
+            </select>
           </div>
         </div>
       </div>
@@ -172,6 +181,7 @@ import MainCanvas from "~/components/MainCanvas";
 export default {
   data() {
     return {
+      face: 0,
       selectedLayer: null,
       addingText: "",
       addingTextSize: 100,
@@ -289,6 +299,10 @@ export default {
       return {
         selected: layer.name == this.selectedLayer
       };
+    },
+    changeFace(event) {
+      console.log(event);
+      this.$refs.main.changeFace(event.target.value);
     }
   },
   components: {
