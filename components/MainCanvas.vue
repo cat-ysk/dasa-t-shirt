@@ -3,7 +3,6 @@
 </template>
 
 <script>
-let selectedSprite = null;
 let LAYER_ID = 0;
 const WIDTH = 600;
 const HEIGHT = 777;
@@ -12,8 +11,7 @@ export default {
   data() {
     return {
       layerMask: null,
-      layerContainer: null,
-      selected: selectedSprite
+      layerContainer: null
     };
   },
 
@@ -63,7 +61,7 @@ export default {
       sprite.anchor.x = sprite.anchor.y = 0.5;
       sprite.name = "画像" + LAYER_ID++;
       // sprite.mask = this.layerMask;
-      subscribe(sprite);
+      this.subscribe(sprite);
       this.layerContainer.addChild(sprite);
       this.$emit("add-layer", sprite);
     },
@@ -78,55 +76,55 @@ export default {
       sprite.y = this.app.renderer.height / 2;
       sprite.anchor.x = sprite.anchor.y = 0.5;
       sprite.name = body;
-      subscribe(sprite);
+      this.subscribe(sprite);
       this.layerContainer.addChild(sprite);
       this.$emit("add-layer", sprite);
     },
 
     remove(sprite) {
       this.layerContainer.removeChild(sprite);
+    },
+
+    subscribe(obj) {
+      obj.interactive = true;
+      obj
+        .on("pointerdown", this.onDragStart)
+        .on("pointerup", this.onDragEnd)
+        .on("pointerupoutside", this.onDragEnd)
+        .on("pointermove", this.onDragMove);
+    },
+    onDragStart(event) {
+      if (!event.target.dragging) {
+        event.target.data = event.data;
+        event.target.dragging = true;
+        event.target.alpha = 0.7;
+        event.target.dragPoint = event.data.getLocalPosition(
+          event.target.parent
+        );
+        event.target.dragPoint.x -= event.target.x;
+        event.target.dragPoint.y -= event.target.y;
+        this.$emit("select-layer", event.target);
+      }
+    },
+    onDragEnd(event) {
+      if (event.target.dragging) {
+        event.target.dragging = false;
+        event.target.alpha = 1;
+        // set the interaction data to null
+        event.target.data = null;
+      }
+    },
+    onDragMove(event) {
+      if (event.target && event.target.dragging) {
+        const newPosition = event.target.data.getLocalPosition(
+          event.target.parent
+        );
+        event.target.x = newPosition.x - event.target.dragPoint.x;
+        event.target.y = newPosition.y - event.target.dragPoint.y;
+      }
     }
   }
 };
-
-function subscribe(obj) {
-  obj.interactive = true;
-  obj
-    .on("pointerdown", onDragStart)
-    .on("pointerup", onDragEnd)
-    .on("pointerupoutside", onDragEnd)
-    .on("pointermove", onDragMove);
-}
-
-function onDragStart(event) {
-  selectedSprite = this;
-  console.log(this);
-  if (!this.dragging) {
-    this.data = event.data;
-    this.dragging = true;
-    this.alpha = 0.7;
-    this.dragPoint = event.data.getLocalPosition(this.parent);
-    this.dragPoint.x -= this.x;
-    this.dragPoint.y -= this.y;
-  }
-}
-
-function onDragEnd() {
-  if (this.dragging) {
-    this.dragging = false;
-    this.alpha = 1;
-    // set the interaction data to null
-    this.data = null;
-  }
-}
-
-function onDragMove() {
-  if (this.dragging) {
-    const newPosition = this.data.getLocalPosition(this.parent);
-    this.x = newPosition.x - this.dragPoint.x;
-    this.y = newPosition.y - this.dragPoint.y;
-  }
-}
 </script>
 
 <style>

@@ -6,6 +6,7 @@
           <MainCanvas
             ref="main"
             @add-layer="onAddLayer"
+            @select-layer="onSelectLayer"
           />
         </div>
       </div>
@@ -93,6 +94,7 @@
               v-for="layer in rLayers"
               :key="layer.name"
               draggable="true"
+              :class="layerClass(layer)"
             >
               <p>{{ layer.name }}</p>
               <div>
@@ -170,6 +172,7 @@ import MainCanvas from "~/components/MainCanvas";
 export default {
   data() {
     return {
+      selectedLayer: null,
       addingText: "",
       addingTextSize: 100,
       addingTextColor: "000000",
@@ -245,6 +248,7 @@ export default {
     },
     onAddLayer(sprite) {
       this.layers.push(sprite);
+      this.selectedLayer = sprite.name;
     },
     onZoom(sprite, amount) {
       sprite.scale.x += amount;
@@ -272,11 +276,19 @@ export default {
       this.$refs.main.addImage(e.target.src);
     },
     download() {
-      console.log(this.$refs.main.$el);
       var data = this.$refs.main.$el
         .toDataURL("image/png")
         .replace("image/png", "image/octet-stream");
       this.$refs.download.setAttribute("href", data);
+    },
+    onSelectLayer(sprite) {
+      console.log(sprite);
+      this.selectedLayer = sprite.name;
+    },
+    layerClass(layer) {
+      return {
+        selected: layer.name == this.selectedLayer
+      };
     }
   },
   components: {
@@ -346,5 +358,8 @@ input[type="file"] {
   padding: 5px;
   display: inline-block;
   width: 40px;
+}
+.selected {
+  background: #eef;
 }
 </style>
