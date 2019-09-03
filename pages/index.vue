@@ -32,7 +32,7 @@
           <label class="is-inline-block">色</label>
           <select
             v-model="addingTextColor"
-            style="width: 80px"
+            style="width: 100px; font-size: 1.2rem"
           >
             <option
               v-for="color in colors"
@@ -45,14 +45,29 @@
           <label class="is-inline-block">フォント</label>
           <select
             v-model="addingTextFont"
-            style="width: 200px"
+            style="width: 200px; font-size: 1.2rem"
           >
-            <option>Arial</option>
-            <option>Impact</option>
-            <option>Century</option>
-            <option>ＭＳ Ｐゴシック</option>
-            <option>ＭＳ Ｐ明朝</option>
-            <option>メイリオ</option>
+            <option value="arial">Arial</option>
+            <option
+              style="font-family: arial black"
+              value="arial black"
+            >Arial Black</option>
+            <option style="font-family: Impact">Impact</option>
+            <option style="font-family: Century">Century</option>
+            <option style="font-family: ＭＳ Ｐゴシック">ＭＳ Ｐゴシック</option>
+            <option style="font-family: ＭＳ Ｐ明朝">ＭＳ Ｐ明朝</option>
+            <option
+              value="Hannari"
+              style="font-family: Hannari"
+            >はんなり</option>
+            <option
+              value="Nikukyu"
+              style="font-family: Nikukyu"
+            >ニクキュウ</option>
+            <option
+              value="Nico Moji"
+              style="font-family: Nico Moji"
+            >にこもじ</option>
           </select>
           <div class="mt-1 field has-addons">
             <div class="control">
@@ -178,12 +193,12 @@
           <li>2019/09/03 v0.0.1 つくった</li>
         </ul>
       </div>
-      <!--
+
       <div class="column">
-        サンキュー <a href="https://twitter.com/ononon/">@ononon</a><br />
+        企画サンキュー <a href="https://twitter.com/ononon/">@ononon</a><br />
         バグ報告ここ <a href="https://twitter.com/nyallpo/">@nyallpo</a>
       </div>
-      -->
+
     </div>
   </div>
 </template>
@@ -199,21 +214,35 @@ export default {
       addingText: "",
       addingTextSize: 100,
       addingTextColor: "000000",
-      addingTextFont: "Arial",
+      addingTextFont: "arial",
       layers: [],
       zoomAmount: 10,
       rotateAmount: 30,
       colors: [
-        { text: "黒", value: "000000" },
-        { text: "赤", value: "ff0000" },
-        { text: "青", value: "0000ff" },
-        { text: "白", value: "ffffff" },
-        { text: "グレー", value: "808080" },
-        { text: "お肌", value: "fff5ee" },
-        { text: "紫", value: "800080" },
-        { text: "オレンジ", value: "ffa500" },
-        { text: "茶", value: "a0522d" },
-        { text: "青緑", value: "40e0d0" }
+        { text: "black", value: "000000" },
+        { text: "aqua", value: "00ffff" },
+        { text: "mediumturquoise", value: "48d1cc" },
+
+        { text: "lightsteelblue", value: "b0c4de" },
+        { text: "steelblue", value: "4682b4" },
+        { text: "royalblue", value: "4169e1" },
+        { text: "midnightblue", value: "191970" },
+        { text: "lightsteelblue", value: "b0c4de" },
+        { text: "white", value: "ffffff" },
+        { text: "dimgray", value: "696969" },
+        { text: "darkgray", value: "a9a9a9" },
+        { text: "gainsboro", value: "dcdcdc" },
+        { text: "papayawhip", value: "ffefd5" },
+        { text: "hotpink", value: "ff69b4" },
+        { text: "orchid", value: "da70d6" },
+        { text: "darkmagenta", value: "8b008b" },
+        { text: "darkslateblue", value: "483d8b" },
+        { text: "darkorange", value: "ffa500" },
+        { text: "coral", value: "ff7f50" },
+        { text: "tomato", value: "ff6347" },
+        { text: "saddlebrown", value: "8b4513" },
+        { text: "darkslategray", value: "2f4f4f" },
+        { text: "teal", value: "008080" }
       ],
       stamps: [
         "⚓",
@@ -223,9 +252,11 @@ export default {
         "🎶",
         "❤",
         "💓",
+        "💖",
         "💕",
         "💋",
         "🐰",
+        "✌",
         "💪",
         "🙏",
         "🙌",
@@ -234,14 +265,21 @@ export default {
         "✨",
         "🌟",
         "🎉",
+        "😉",
         "😍",
+        "😎",
         "😣",
         "💯",
         "🉐",
         "㊗",
         "㊙",
+        "🍗",
+        "🍜",
+        "🌸",
+        "🌻",
+        "💦",
         "👺",
-        "💩"
+        "📛"
       ]
     };
   },

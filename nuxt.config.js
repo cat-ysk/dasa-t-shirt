@@ -21,6 +21,22 @@ export default {
         rel: "stylesheet",
         href:
           "https://cdn.materialdesignicons.com/4.2.95/css/materialdesignicons.min.css"
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/earlyaccess/nikukyu.css"
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/earlyaccess/hannari.css"
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css?family=Sawarabi+Gothic"
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/earlyaccess/nicomoji.css"
       }
     ]
   },
