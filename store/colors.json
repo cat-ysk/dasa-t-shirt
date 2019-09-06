@@ -1,0 +1,94 @@
+[
+  {
+    "text": "black",
+    "value": "000000"
+  },
+  {
+    "text": "aqua",
+    "value": "00ffff"
+  },
+  {
+    "text": "mediumturquoise",
+    "value": "48d1cc"
+  },
+  {
+    "text": "lightsteelblue",
+    "value": "b0c4de"
+  },
+  {
+    "text": "steelblue",
+    "value": "4682b4"
+  },
+  {
+    "text": "royalblue",
+    "value": "4169e1"
+  },
+  {
+    "text": "midnightblue",
+    "value": "191970"
+  },
+  {
+    "text": "lightsteelblue",
+    "value": "b0c4de"
+  },
+  {
+    "text": "white",
+    "value": "ffffff"
+  },
+  {
+    "text": "dimgray",
+    "value": "696969"
+  },
+  {
+    "text": "darkgray",
+    "value": "a9a9a9"
+  },
+  {
+    "text": "gainsboro",
+    "value": "dcdcdc"
+  },
+  {
+    "text": "papayawhip",
+    "value": "ffefd5"
+  },
+  {
+    "text": "hotpink",
+    "value": "ff69b4"
+  },
+  {
+    "text": "orchid",
+    "value": "da70d6"
+  },
+  {
+    "text": "darkmagenta",
+    "value": "8b008b"
+  },
+  {
+    "text": "darkslateblue",
+    "value": "483d8b"
+  },
+  {
+    "text": "darkorange",
+    "value": "ffa500"
+  },
+  {
+    "text": "coral",
+    "value": "ff7f50"
+  },
+  {
+    "text": "tomato",
+    "value": "ff6347"
+  },
+  {
+    "text": "saddlebrown",
+    "value": "8b4513"
+  },
+  {
+    "text": "darkslategray",
+    "value": "2f4f4f"
+  },
+  {
+    "text": "teal",
+    "value": "008080"
+  }
+]

@@ -1,5 +1,5 @@
 <template>
-  <canvas class="main-canvas" />
+  <canvas class="main-canvas"></canvas>
 </template>
 
 <script>
@@ -28,34 +28,28 @@ export default {
       backgroundColor: 0xffffff,
       view: this.$el
     });
-    // console.log(this.app.renderer.width);
-    // this.imgLayer = new PIXI.display.Group(0, true);
-    // this.app.stage.addChild(new PIXI.display.Layer(this.imgLayer));
     this.layerContainer = new PIXI.Container();
-    this.app.stage.addChild(this.layerContainer);
-    this.loadCharaImage();
-    this.loadOverlay();
-
-    // TEST
-    // this.addImage("buddha.jpg");
+    let base = this.loadBaseImage();
+    let overlay = this.loadOverlayImage();
+    this.app.stage.addChild(this.layerContainer, base, overlay)
   },
   methods: {
-    // 服のしわとか
-    loadOverlay() {
+    // 服のしわとかを乗算で被せるレイヤー
+    loadOverlayImage() {
       let sprite = new PIXI.Sprite.from("001_overlay.png");
       sprite.width = this.app.renderer.width;
       sprite.height = this.app.renderer.height;
       sprite.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-      this.app.stage.addChild(sprite);
+      return sprite;
     },
 
     // ベースレイヤー
-    loadCharaImage() {
+    loadBaseImage() {
       let sprite = new PIXI.Sprite.from(this.baseTextures[0]);
       sprite.width = this.app.renderer.width;
       sprite.height = this.app.renderer.height;
-      this.app.stage.addChild(sprite);
       this.charaSprite = sprite;
+      return sprite;
     },
 
     // 追加画像レイヤー
