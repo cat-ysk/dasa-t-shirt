@@ -31,12 +31,12 @@ export default {
     this.layerContainer = new PIXI.Container();
     let base = this.loadBaseImage();
     let overlay = this.loadOverlayImage();
-    this.app.stage.addChild(this.layerContainer, base, overlay)
+    this.app.stage.addChild(this.layerContainer, base, overlay);
   },
   methods: {
     // 服のしわとかを乗算で被せるレイヤー
     loadOverlayImage() {
-      let sprite = new PIXI.Sprite.from("001_overlay.png");
+      let sprite = new PIXI.Sprite.from("overlay.png");
       sprite.width = this.app.renderer.width;
       sprite.height = this.app.renderer.height;
       sprite.blendMode = PIXI.BLEND_MODES.MULTIPLY;
@@ -94,7 +94,9 @@ export default {
         .on("pointerdown", this.onDragStart)
         .on("pointerup", this.onDragEnd)
         .on("pointerupoutside", this.onDragEnd)
-        .on("pointermove", this.onDragMove);
+        .on("pointermove", this.onDragMove)
+        // オブジェクトがポインタにくっ付いて離れない現象を軽減させる
+        .on("click", this.onDragEnd);
     },
     onDragStart(event) {
       if (!event.target.dragging) {
