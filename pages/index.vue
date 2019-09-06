@@ -18,58 +18,7 @@
             @change="onAddImage"
           >
         </label>
-        <div class="mt-1">
-          <label class="is-inline-block">文字でかさ(px)</label>
-          <input
-            class="is-inline-block"
-            style="width: 60px"
-            type="number"
-            v-model.number="addingTextSize"
-          />
-          <br/>
-          <label class="is-inline-block">色</label>
-          <select
-            v-model="addingTextColor"
-            style="width: 100px; font-size: 1.2rem"
-          >
-            <option
-              v-for="color in colors"
-              :key="color.value"
-              :value="color.value"
-              v-bind:style="{backgroundColor: '#' + color.value}"
-            >{{ color.text }}
-            </option>
-          </select>
-          <br/>
-          <label class="is-inline-block">フォント</label>
-          <select
-            v-model="addingTextFont"
-            style="width: 200px; font-size: 1.2rem"
-          >
-            <option v-for="font in fonts" :key="font.value" :value="font.value"
-                    :style="{fontFamily: font.value}">
-              {{ font.text }}
-            </option>
-          </select>
-          <div class="mt-1 field has-addons">
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                placeholder=""
-                v-model="addingText"
-              >
-            </div>
-            <div class="control">
-              <a
-                class="button is-info"
-                @click="onAddText"
-              >
-                文字を追加する
-              </a>
-            </div>
-          </div>
-        </div>
+        <InputTextForm @change="onAddText"/>
         <hr/>
         <label class="label">スタンプ</label>
         <div>
@@ -156,17 +105,10 @@
         >＞＞＞画像をダウンロード＜＜＜
         </button>
       </a>
-
-      <script
-        async
-        src="https://platform.twitter.com/widgets.js"
-        charset="utf-8"
-      ></script>
     </div>
     <hr/>
     <div class="columns ">
       <div class="column">
-
         <p
           class="is-block"
           style="margin-right: 1rem"
@@ -177,37 +119,28 @@
           <li>2019/09/03 v0.0.1 つくった</li>
         </ul>
       </div>
-
       <div class="column">
         企画サンキュー <a href="https://twitter.com/ononon/">@ononon</a><br/>
         バグ報告ここ <a href="https://twitter.com/nyallpo/">@nyallpo</a>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
   import MainCanvas from "~/components/MainCanvas";
-  import colorsJson from "~/store/colors.json";
   import stampsJson from "~/store/stamps.json";
-  import fontsJson from "~/store/fonts.json"
+  import InputTextForm from "~/components/InputTextForm";
 
   export default {
     data() {
       return {
         face: 0,
         selectedLayer: null,
-        addingText: "",
-        addingTextSize: 100,
-        addingTextColor: "000000",
-        addingTextFont: "arial",
         layers: [],
         zoomAmount: 10,
         rotateAmount: 30,
-        colors: colorsJson,
         stamps: stampsJson,
-        fonts: fontsJson
       };
     },
     computed: {
@@ -249,22 +182,14 @@
         this.$refs.main.remove(sprite);
         this.layers.splice(this.layers.indexOf(sprite), 1);
       },
-      onAddText() {
-        if (this.addingText.length > 0) {
-          this.$refs.main.addText(
-            this.addingText,
-            this.addingTextSize,
-            parseInt(this.addingTextColor, 16),
-            this.addingTextFont
-          );
-          this.addingText = "";
-        }
+      onAddText(obj) {
+        this.$refs.main.addText(obj)
       },
       addStamp(e) {
         this.$refs.main.addImage(e.target.src);
       },
       download() {
-        var data = this.$refs.main.$el
+        const data = this.$refs.main.$el
           .toDataURL("image/png")
           .replace("image/png", "image/octet-stream");
         this.$refs.download.setAttribute("href", data);
@@ -284,7 +209,8 @@
       }
     },
     components: {
-      MainCanvas
+      MainCanvas,
+      InputTextForm
     },
     mounted() {
       window.twemoji.parse(document.body);

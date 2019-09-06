@@ -60,22 +60,21 @@ export default {
       sprite.y = this.app.renderer.height / 2;
       sprite.anchor.x = sprite.anchor.y = 0.5;
       sprite.name = "画像" + LAYER_ID++;
-      // sprite.mask = this.layerMask;
       this.subscribe(sprite);
       this.layerContainer.addChild(sprite);
       this.$emit("add-layer", sprite);
     },
 
-    addText(body, size, color, font) {
-      let sprite = new PIXI.Text(body, {
-        fontSize: size,
-        fill: color,
-        fontFamily: font
+    addText(obj) {
+      let sprite = new PIXI.Text(obj.text, {
+        fontSize: obj.size,
+        fill: obj.color,
+        fontFamily: obj.font
       });
       sprite.x = this.app.renderer.width / 2;
       sprite.y = this.app.renderer.height / 2;
       sprite.anchor.x = sprite.anchor.y = 0.5;
-      sprite.name = body;
+      sprite.name = obj.text;
       this.subscribe(sprite);
       this.layerContainer.addChild(sprite);
       this.$emit("add-layer", sprite);
